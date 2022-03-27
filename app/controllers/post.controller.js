@@ -83,10 +83,68 @@ exports.findOne = (req, res) => {
 };
 
 // update
-exports.update = (req, res) => {};
+exports.update = (req, res) => {
+  const id = req.params.id;
+
+  Post.update(req.body, {
+    where: { id: id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          status: true,
+          message: "Post updated successfully!",
+          values: [],
+          errors: [],
+        });
+      } else {
+        res.send({
+          status: false,
+          message: `Cannot update Post with id=${id}. Maybe Post was not found or req.body is empty!`,
+          values: [],
+          errors: [],
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating Post with id=" + id,
+        errors: err.message || [],
+      });
+    });
+};
 
 // delete
-exports.delete = (req, res) => {};
+exports.delete = (req, res) => {
+  const id = req.params.id;
+
+  Post.destroy({
+    where: { id: id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          status: true,
+          message: "Post deleted successfully!",
+          values: [],
+          errors: [],
+        });
+      } else {
+        res.send({
+          status: false,
+          message: `Cannot delete Post with id=${id}. Maybe Post was not found!`,
+          values: [],
+          errors: [],
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Could not delete Post with id=" + id,
+        errors: err.message || [],
+      });
+    });
+};
 
 // delete all
 exports.deleteAll = (req, res) => {};
