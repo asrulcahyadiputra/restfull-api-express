@@ -147,7 +147,43 @@ exports.delete = (req, res) => {
 };
 
 // delete all
-exports.deleteAll = (req, res) => {};
+exports.deleteAll = (req, res) => {
+  Post.destroy({
+    where: {},
+    truncate: false,
+  })
+    .then((nums) => {
+      res.send({
+        status: true,
+        message: `${nums} Posts were deleted successfully!`,
+        values: [],
+        errors: [],
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while removing all posts.",
+        errors: err.message || [],
+      });
+    });
+};
 
 // find by published
-exports.findByPublished = (req, res) => {};
+exports.findByPublished = (req, res) => {
+  Post.findAll({ where: { published: true } })
+    .then((results) => {
+      res.send({
+        status: true,
+        message: "Posts retrieved successfully!",
+        values: results,
+        errors: [],
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        status: false,
+        message: err.message || "Some error occurred while retrieving posts.",
+        errors: err.message || [],
+      });
+    });
+};
