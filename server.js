@@ -2,6 +2,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 require("dotenv").config();
+
+// models
+const db = require("./app/models");
+
 const app = express();
 
 let whiteList = ["http://localhost:8000", "http://localhost:8080"];
@@ -21,6 +25,11 @@ app.use(cors(corsOptions));
 // parse requests of content-type - application/json, application/x-www-form-urlencoded
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// sync database
+db.sequelize.sync().then(() => {
+  console.log("Database tables created!");
+});
 
 app.get("/", (req, res) => {
   res.json({
