@@ -17,3 +17,9 @@ exports.update = (req, res) => {};
 
 // delete
 exports.delete = (req, res) => {};
+
+// delete all
+exports.deleteAll = (req, res) => {};
+
+// find by published
+exports.findByPublished = (req, res) => {};
