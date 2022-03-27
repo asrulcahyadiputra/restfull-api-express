@@ -23,7 +23,12 @@ exports.create = (req, res) => {
   // save Post in the database
   Post.create(post)
     .then((data) => {
-      res.send(data);
+      res.status(201).send({
+        status: true,
+        message: "Post created successfully!",
+        values: data,
+        errors: [],
+      });
     })
     .catch((err) => {
       res.status(500).send({
@@ -33,10 +38,49 @@ exports.create = (req, res) => {
 };
 
 // retrieve all
-exports.findAll = (req, res) => {};
+exports.findAll = (req, res) => {
+  const title = req.query.title;
+  var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+
+  Post.findAll({ where: condition })
+    .then((data) => {
+      res.send({
+        status: true,
+        message: "Posts retrieved successfully!",
+        values: data,
+        errors: [],
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        status: false,
+        message: err.message || "Some error occurred while retrieving posts.",
+        errors: err.message || [],
+      });
+    });
+};
 
 // retrieve one
-exports.findOne = (req, res) => {};
+exports.findOne = (req, res) => {
+  const id = req.params.id;
+
+  Post.findByPk(id)
+    .then((data) => {
+      res.send({
+        status: true,
+        message: "Post retrieved successfully!",
+        values: data,
+        errors: [],
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        status: false,
+        message: err.message || "Some error occurred while retrieving post.",
+        errors: err.message || [],
+      });
+    });
+};
 
 // update
 exports.update = (req, res) => {};
