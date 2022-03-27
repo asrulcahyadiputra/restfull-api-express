@@ -4,7 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 // models
-const db = require("./app/models");
+// const db = require("./app/models");
 
 const app = express();
 
@@ -27,9 +27,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // sync database
-db.sequelize.sync().then(() => {
-  console.log("Database tables created!");
-});
+// db.sequelize.sync().then(() => {
+//   console.log("Database tables created!");
+// });
 
 app.get("/", (req, res) => {
   res.json({
